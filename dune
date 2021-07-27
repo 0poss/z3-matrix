@@ -1,0 +1,4 @@
+(library
+ (name Z3Matrix)
+ (public_name z3-matrix)
+ (libraries z3 core_kernel))
