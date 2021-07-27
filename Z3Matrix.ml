@@ -1,7 +1,6 @@
 open Core_kernel
 open Z3enums
 open Z3
-open Printf
 
 
 module Matrix =
@@ -40,9 +39,7 @@ struct
 
   let mk_mul_s mulfn addfn ctx a b : t =
     let calc_e i j =
-      let _ = printf "calc_e : (%d ; %d)\n" i j in
       let rec aux k e =
-        let _ = printf "aux : %d, %s\n" k @@ Expr.to_string e in
         if k = a.ncols-1 then e
         else aux (k+1) (addfn e @@ mulfn a.elems.(i).(k) b.elems.(k).(j)) in
       aux 0 @@ Expr.mk_numeral_int ctx 0 a.esort in
