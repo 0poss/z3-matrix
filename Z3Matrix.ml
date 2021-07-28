@@ -28,6 +28,9 @@ struct
       elems = Array.init n ~f:(fun i -> Array.init m ~f:(f i));
     }
 
+  let init' ~nrows e : t =
+    init ~nrows ~ncols:1 ~f:(fun _ _ -> e)
+
   let map a ~f:f =
     {
       nrows = a.nrows;
