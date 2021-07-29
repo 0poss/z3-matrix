@@ -81,7 +81,8 @@ struct
 
   let mk_eq ctx a b : Expr.expr =
     let rec aux eq i j =
-      let calc_eq i j = B.mk_eq ctx eq @@ (B.mk_eq ctx a.elems.(i).(j) b.elems.(i).(j)) in
+      let calc_eq i j =
+        B.mk_and ctx [eq; B.mk_eq ctx a.elems.(i).(j) b.elems.(i).(j)] in
       match i, j with
       | (0, 0) -> calc_eq 0 0
       | (0, j) -> aux (calc_eq 0 j) 0 (j-1)
