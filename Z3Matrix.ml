@@ -20,7 +20,7 @@ struct
       elems : Expr.expr array array;
     }
 
-  let init ~nrows:n ~ncols:m ~f:f : t =
+  let mk_matrix ~nrows:n ~ncols:m ~f:f : t =
     {
       nrows = n;
       ncols = m;
@@ -28,8 +28,8 @@ struct
       elems = Array.init n ~f:(fun i -> Array.init m ~f:(f i));
     }
 
-  let init' ~nrows e : t =
-    init ~nrows ~ncols:1 ~f:(fun _ _ -> e)
+  let mk_matrix' ~nrows ~ncols e : t =
+    mk_matrix ~nrows ~ncols ~f:(fun _ _ -> e)
 
   let map a ~f:f =
     {
@@ -46,7 +46,7 @@ struct
         if k = a.ncols-1 then e
         else aux (k+1) (addfn e @@ mulfn a.elems.(i).(k) b.elems.(k).(j)) in
       aux 0 @@ Expr.mk_numeral_int ctx 0 a.esort in
-    init ~nrows:a.nrows ~ncols:b.ncols ~f:calc_e
+    mk_matrix ~nrows:a.nrows ~ncols:b.ncols ~f:calc_e
 
   let mk_mul ctx a b : t =
     if a.ncols <> b.nrows then
