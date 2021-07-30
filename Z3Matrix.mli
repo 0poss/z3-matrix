@@ -18,4 +18,6 @@ sig
   val mk_matrix' : nrows:int -> ncols:int -> Z3.Expr.expr -> t
 
   val map : t -> f:(Z3.Expr.expr -> Z3.Expr.expr) -> t
+
+  val iter : t -> f:(Z3.Expr.expr -> unit) -> unit
 end
