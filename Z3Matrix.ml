@@ -28,7 +28,35 @@ struct
       elems = Array.init n ~f:(fun i -> Array.init m ~f:(f i));
     }
 
-  let mk_matrix' ~nrows ~ncols e : t =
+  let mk_matrix_arr arr : t =
+    if Array.length arr = 0 then
+      raise (Err "The provided array is empty.");
+    let ncols = Array.fold arr ~init:(Array.length arr.(0)) ~f:(
+      fun acc row ->
+        let len = Array.length row in
+        if len <> acc then
+          raise (Err "Some rows have different sizes.");
+        acc
+    ) in
+    let esort = Array.fold arr ~init:(Expr.get_sort arr.(0).(0)) ~f:(
+        fun acc row -> (
+            Array.fold row ~init:acc ~f:(
+              fun acc e ->
+                let sort = Expr.get_sort e in
+                if Sort.get_id sort <> Sort.get_id acc then
+                  raise (Err "Some expressions have different sorts.");
+                acc
+            )
+          )
+      ) in
+    {
+      nrows = Array.length arr;
+      ncols = ncols;
+      esort = esort;
+      elems = arr
+    }
+
+  let mk_matrix_const ~nrows ~ncols e : t =
     mk_matrix ~nrows ~ncols ~f:(fun _ _ -> e)
 
   let map a ~f:f =
