@@ -40,10 +40,13 @@ struct
       elems = Array.map a.elems ~f:(fun row -> Array.map row ~f);
     }
 
+  let iter a ~f:f =
+    Array.iter a.elems ~f:(fun row -> Array.iter row ~f)
+
   let mk_mul_s mulfn addfn ctx a b : t =
     let calc_e i j =
       let rec aux k e =
-        if k = a.ncols-1 then e
+        if k = a.ncols then e
         else aux (k+1) (addfn e @@ mulfn a.elems.(i).(k) b.elems.(k).(j)) in
       aux 0 @@ Expr.mk_numeral_int ctx 0 a.esort in
     mk_matrix ~nrows:a.nrows ~ncols:b.ncols ~f:calc_e
